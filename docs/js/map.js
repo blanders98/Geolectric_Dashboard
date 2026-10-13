@@ -53,8 +53,8 @@ function featureStyle(priceMap, salesMap, metric) {
     return {
       fillColor:   valueToColor(value, metric),
       fillOpacity: 0.84,
-      color:       'rgba(119,158,251,0.22)',
-      weight:      0.7,
+      color:       'rgba(198,219,162,0.6)',
+      weight:      1.2,
       opacity:     1,
     };
   };
@@ -67,7 +67,7 @@ function bindTooltip(layer, priceMap, salesMap) {
   const sales = salesMap[key];
 
   const priceText = price != null
-    ? `${price.toFixed(3)} cents/kWh`
+    ? `${price.toFixed(2)}¢/kWh`
     : '<em style="color:#8b949e">No data</em>';
   const salesText = sales != null
     ? `${Math.round(sales).toLocaleString()} GWh`
@@ -122,7 +122,7 @@ function renderMonth(payload) {
             // Show the value for the active metric
             if (state.activeMetric === 'price') {
               document.getElementById('hover-value').textContent =
-                price != null ? `${price.toFixed(3)} c/kWh` : 'No data';
+                price != null ? `${price.toFixed(2)}¢` : 'No data';
             } else {
               document.getElementById('hover-value').textContent =
                 sales != null ? `${Math.round(sales).toLocaleString()} GWh` : 'No data';
@@ -149,25 +149,25 @@ function updateStats(payload) {
   const s = payload.stats;
 
   setCard('national-avg',
-    s.national_avg_price != null ? `${s.national_avg_price.toFixed(3)}` : '--',
-    'cents/kWh - all sectors',
+    s.national_avg_price != null ? `${s.national_avg_price.toFixed(2)}¢` : '--',
+    'cents/kWh · all sectors',
     'cobalt'
   );
   setCard('national-sales',
     s.national_total_sales != null
-      ? Math.round(s.national_total_sales).toLocaleString()
+      ? `${Math.round(s.national_total_sales).toLocaleString()} GWh`
       : '--',
-    'GWh - all sectors',
+    'monthly · all sectors',
     'electric'
   );
   setCard('cheapest-state',
-    s.state_min_price != null ? `${s.state_min_price.toFixed(3)}` : '--',
-    s.state_min_price_name ? titleCase(s.state_min_price_name) : '--',
+    s.state_min_price != null ? `${s.state_min_price.toFixed(2)}¢` : '--',
+    s.state_min_price_name ? `${titleCase(s.state_min_price_name)} · lowest price` : '--',
     'green'
   );
   setCard('priciest-state',
-    s.state_max_price != null ? `${s.state_max_price.toFixed(3)}` : '--',
-    s.state_max_price_name ? titleCase(s.state_max_price_name) : '--',
+    s.state_max_price != null ? `${s.state_max_price.toFixed(2)}¢` : '--',
+    s.state_max_price_name ? `${titleCase(s.state_max_price_name)} · highest price` : '--',
     'red'
   );
 }
